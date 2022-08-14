@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="api-impl-suite.xml" />
+	<munit:test name="get-order__c-impl-flow-test" doc:id="ad0f3e41-4478-4306-b60f-c4027d735e8e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock ORder__c" doc:id="1db5e67e-bf53-4a79-b2a1-523af7b43776" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f0261311-5873-4378-966b-8bca300c9424" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getordercimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getordercimplflowtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="poNumber" value="#[output application/java --- readUrl('classpath://getordercimplflowtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="dafa0ea0-8d16-43d7-b6f3-b670584a44b3" >
+				<munit:payload value="#[readUrl('classpath://getordercimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getordercimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getordercimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-order__c-impl-flow" doc:id="a1cf5cc3-e99d-433c-8364-afce50efd22e" name="get-order__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="040bb297-0b23-404c-baf6-4162504e9dee" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getordercimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-customer__c-impl-flow-test" doc:id="bc0864a0-39db-47d6-ba41-1f1901531a97" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Customer__c" doc:id="268aefdc-ad79-4d04-a936-54e8e9f4e5bb" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1f5837c9-61c5-4b73-9871-301f61b76444" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getcustomercimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomercimplflowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="893c81a4-583d-4a9d-9e84-54bc76d3c7eb" >
+				<munit:payload value="#[readUrl('classpath://getcustomercimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getcustomercimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomercimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-customer__c-impl-flow" doc:id="4b791fe4-dcf4-447f-bcda-0a3e9644f878" name="get-customer__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="ddc91c9b-2b9c-4b2e-8d9e-f69d498afdaa" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomercimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-item__c-impl-flow-test" doc:id="7ff9f71d-a4db-4ccc-84af-e5b63943df00" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Item__c" doc:id="bc709b24-c157-4883-bdd1-f42e5fa3107d" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="009d02b7-0c4e-4013-8e05-75b475f261a5" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://getitemcimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getitemcimplflowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="c4fc3cd2-9193-440c-b264-dbf11d35546e" >
+				<munit:payload value="#[readUrl('classpath://getitemcimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getitemcimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getitemcimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-item__c-impl-flow" doc:id="ac0f6191-9220-4c26-96f4-6b9d2c05cd5b" name="get-item__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="76db0dbc-45a8-4cbb-b4b4-47bd62ac1e09" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getitemcimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="create-order__c-impl-flow-test" doc:id="aaab9764-41d7-49a6-9f73-3a3bf231ea77" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock ORder_c" doc:id="8d091408-d4d3-4c35-a1e7-09f13fa546cf" processor="salesforce:create">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="7a7a5ebb-09ba-4a03-8a66-101cb7f850a2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://createordercimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://createordercimplflowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="96405e87-7169-4347-aed7-2808d508ed19" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://createordercimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://createordercimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://createordercimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to create-order__c-impl-flow" doc:id="c15464cc-5951-479b-9904-32a124400b40" name="create-order__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f0bc2f3c-2b28-42da-b926-d071e120c45f" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import createordercimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="create-customer__c-impl-flow-test" doc:id="f4b855d5-9797-49f3-8ec0-882649026931" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Customer__c" doc:id="80659bad-ed35-4922-994b-df7f9ffe3b7e" processor="salesforce:create">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="bed46060-fdeb-4cff-aac2-251e7f111a1e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://createcustomercimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://createcustomercimplflowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="75bcea36-61a9-46c8-89f8-1892a30404d5" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://createcustomercimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://createcustomercimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://createcustomercimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to create-customer__c-impl-flow" doc:id="46b2b410-a0b3-46a7-88d0-c81c9e75785a" name="create-customer__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e2898cb7-dd6a-4c30-8c95-7de945f096ae" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import createcustomercimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="create-item__c-impl-flow-test" doc:id="75ae9359-a51b-4cb4-8433-2bb392d89804" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Item__c" doc:id="e218a9ad-14bb-4594-91f2-d00f31b879c1" processor="salesforce:create">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2e60432c-051d-4d58-8d5f-aae8e19245cb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://createitemcimplflowtest\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://createitemcimplflowtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="b5581999-f674-4fd7-8f54-acef41b7aab1" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://createitemcimplflowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://createitemcimplflowtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://createitemcimplflowtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to create-item__c-impl-flow" doc:id="d0ebbd43-5065-43c1-86ee-6650f7b0223b" name="create-item__c-impl-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="c206fbec-bc95-4546-9a84-c4203d23110e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import createitemcimplflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

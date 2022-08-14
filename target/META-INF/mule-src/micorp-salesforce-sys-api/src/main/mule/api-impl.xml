@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<json-logger:config name="JSON_Logger_Config"
+		doc:name="JSON Logger Config"
+		doc:id="833471f3-3f1b-4850-ba91-a09f6369d0f8"
+		environment="${mule.env}" applicationName="${secure::json.logger.application.name}" applicationVersion="${secure::json.logger.application.version}"/>
+	<flow name="create-customer__c-impl-flow" doc:id="dc2d1851-8d77-4949-bd15-6331983c3f14" >
+		<json-logger:logger doc:name="flow-start" doc:id="2ab42ceb-3cf8-40fd-b991-d6ca21d904fc" config-ref="JSON_Logger_Config" message="create-customer__c-impl-flow start" />
+		<salesforce:create type="Customer__c" doc:name="Customer__c" doc:id="bed46060-fdeb-4cff-aac2-251e7f111a1e" config-ref="Salesforce_Config">
+			<salesforce:records ><![CDATA[#[output application/java
+---
+[{
+	firstName__c: payload.firstName,
+	lastName__c: payload.lastName,
+	address__c: payload.address,
+	Order__c: payload.orderId
+}]]]]></salesforce:records>
+		</salesforce:create>
+		<ee:transform doc:name="output-salesforce-response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="flow-end" doc:id="c13b28fe-556a-403b-a7d9-ec6f08f7ecb6" config-ref="JSON_Logger_Config" message="create-customer__c-impl-flow end" tracePoint="END"/>
+	</flow>
+	<flow name="create-order__c-impl-flow" doc:id="ab0dd2c1-51bb-4fcd-aeeb-dccb3696148b" >
+		<json-logger:logger doc:id="4879538d-454a-4469-9ab7-91c097774cdf" config-ref="JSON_Logger_Config" message="create-order__c-impl-flow start" doc:name="flow-start"/>
+		<salesforce:create type="ORder__c" doc:name="ORder_c" doc:id="7a7a5ebb-09ba-4a03-8a66-101cb7f850a2" config-ref="Salesforce_Config" >
+			<salesforce:records ><![CDATA[#[output application/java
+---
+[{
+	currencyCode__c: payload.currencyCode,
+	email__c: payload.email,
+	shipInstructions__c: payload.shipInstructions,
+	giftWrapFlag__c: payload.giftWrapFlag,
+	giftWrapMessage__c: payload.giftWrapMessage,
+	poNumber__c: payload.poNumber as Number,
+	subTotal__c: payload.subTotal,
+	signatureRequiredFlag__c: payload.signatureRequiredFlag
+}]]]]></salesforce:records>
+		</salesforce:create>
+		<ee:transform doc:name="output-salesforce-response" doc:id="cfb98239-91be-4648-8e77-f4313cc04b75" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="flow-end" doc:id="50a0b84e-c2c5-4d1f-ad48-a3e7e726a980" config-ref="JSON_Logger_Config" message="create-order__c-impl-flow end" tracePoint="END"/>
+	</flow>
+	    <flow name="create-item__c-impl-flow" doc:id="45ad963a-7a4e-4fb2-a6d5-7b13acfa1b88">
+		<json-logger:logger doc:name="flow-start" doc:id="e0fb76e2-10e5-4dc1-beae-e2acd86f08ae" config-ref="JSON_Logger_Config" message="create-item__c-impl-flow start" />
+		<salesforce:create type="Item__c" doc:name="Item__c" doc:id="2e60432c-051d-4d58-8d5f-aae8e19245cb" config-ref="Salesforce_Config">
+			<salesforce:records ><![CDATA[#[output application/java
+---
+[{
+	Order__c: payload.orderId,
+	category__c: payload.category,
+	id__c: payload.id,
+	quantity__c: payload.quantity,
+	size__c: payload.size
+}]]]]></salesforce:records>
+		</salesforce:create>
+		<ee:transform doc:name="output-salesforce-response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="flow-end" doc:id="af1399e7-811f-4818-bf5d-b67b2fa7c21d" config-ref="JSON_Logger_Config" message="create-item__c-impl-flow end" tracePoint="END"/>
+    
+</flow>
+	<flow name="get-item__c-impl-flow" doc:id="6fa42be4-bbfd-4e68-af85-456ccf9f81a1">
+	<json-logger:logger doc:name="flow-start" doc:id="e4a75bd1-e1d7-4905-8793-8d3fab4c6f94" config-ref="JSON_Logger_Config" message="get-item__c-impl-flow start" />
+        <ee:transform doc:name="salesforce-query" doc:id="1b485404-28c5-4751-9955-53410cf59387" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+"SELECT FIELDS(ALL) From Item__c where Id = '" ++ attributes.uriParams.item_id ++ "' LIMIT 200"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:query doc:name="Item__c" doc:id="009d02b7-0c4e-4013-8e05-75b475f261a5" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[#[payload]]]></salesforce:salesforce-query>
+		</salesforce:query>
+<ee:transform doc:name="output-salesforce-response" doc:id="2b0d14b0-7326-49e6-b366-ea4578c723e2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<json-logger:logger doc:name="flow-end" doc:id="20cd356b-8fc6-420b-8adb-e42b560055f8" config-ref="JSON_Logger_Config" message="get-item__c-impl-flow end" tracePoint="END"/>
+	</flow>
+	
+	<flow name="get-order__c-impl-flow" doc:id="370fc902-c699-4cc5-b0db-4395ca552db9">
+	<json-logger:logger doc:name="flow-start" doc:id="d0e35b82-ddb0-4131-9aae-3713a9b9406e" config-ref="JSON_Logger_Config" message="get-order__c-impl-flow start" />
+		<ee:transform doc:name="set-poNumber-var">
+            <ee:variables>
+                <ee:set-variable variableName="poNumber">attributes.uriParams.'poNumber'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<salesforce:query doc:name="ORder__c" doc:id="f0261311-5873-4378-966b-8bca300c9424" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT FIELDS(ALL) From order__c where poNumber__c = :po LIMIT 200]]></salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[{
+	po: vars.poNumber
+}]]]></salesforce:parameters>
+		
+</salesforce:query>
+		<ee:transform doc:name="output-salesforce-response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    		<json-logger:logger doc:name="flow-end" doc:id="dbcb13f0-95de-406a-9124-16d986d4416f" config-ref="JSON_Logger_Config" message="get-order__c-impl-flow end" tracePoint="END"/>
+    
+	</flow>
+	<flow name="get-customer__c-impl-flow" doc:id="fc22935b-35f8-4b03-b431-82c00c86d5fa">
+	<json-logger:logger doc:name="flow-start" doc:id="adc2db3b-60fa-485e-8cd6-3b663d3994cd" config-ref="JSON_Logger_Config" message="get-customer__c-impl-flow start" />
+		
+		<ee:transform doc:name="salesforce-query">
+            <ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+"SELECT FIELDS(ALL) From Customer__c where Id = '" ++ attributes.uriParams.order_id ++ "' LIMIT 200"]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+            </ee:variables>
+        </ee:transform>
+		<salesforce:query doc:name="Customer__c" doc:id="1f5837c9-61c5-4b73-9871-301f61b76444" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query><![CDATA[#[payload]]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="output-salesforce-response">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="flow-end" doc:id="2d70432b-61a6-4d08-81c4-9bfeaa569a3f" config-ref="JSON_Logger_Config" message="get-customer__c-impl-flow end" tracePoint="END"/>
+    
+	</flow>
+</mule>

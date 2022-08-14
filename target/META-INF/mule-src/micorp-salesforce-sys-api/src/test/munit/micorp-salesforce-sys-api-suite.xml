@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="micorp-salesforce-sys-api-suite.xml" />
+	<munit:test name="get:\item\(item_id):micorp-salesforce-sys-api-config-test" doc:id="68fa5646-6f53-4db1-9d39-be516c15baf7" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-item__c-impl-flow" doc:id="d8afb4e2-e87e-4153-8b12-b427da1328b9" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cb6ab76a-a33a-4425-ad56-ed98e9e375e8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getitemitemidmicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getitemitemidmicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="ba2b41c7-a98e-43d3-9e0e-826f6616343e" >
+				<munit:payload value="#[readUrl('classpath://getitemitemidmicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getitemitemidmicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getitemitemidmicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\item\(item_id):micorp-salesforce-sys-api-config" doc:id="bbe7b131-78d2-4a20-ab48-39f15ad4798e" name="get:\item\(item_id):micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="b60079a1-bde1-49f9-b519-44417eaee504" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getitemitemidmicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\customer\(order_id):micorp-salesforce-sys-api-config-test" doc:id="b4335ecd-f649-4497-ab27-f2a8195059ab" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-customer__c-impl-flow" doc:id="4b81039f-b36d-4c62-a5c4-566a3caef86d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="fcb4b570-8f58-4dcb-8aaa-e0b160cf4a67" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getcustomerorderidmicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomerorderidmicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="fd74b94d-6132-4e99-92d4-5627701ca355" >
+				<munit:payload value="#[readUrl('classpath://getcustomerorderidmicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getcustomerorderidmicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getcustomerorderidmicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\customer\(order_id):micorp-salesforce-sys-api-config" doc:id="76cee1ed-06b7-4e5f-9a95-1eae63cabc44" name="get:\customer\(order_id):micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e7080e85-657e-4659-91aa-9c2b6b08537a" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getcustomerorderidmicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\order\(poNumber):micorp-salesforce-sys-api-config-test" doc:id="723300de-f847-4526-a8ae-a65bcee7290e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock get-order__c-impl-flow" doc:id="45c330ce-9e2d-40c4-9c50-c89d768b64ff" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="41cb8dbc-6a6a-41d0-9c5b-b5ca4e8ec039" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="poNumber" value="#[output application/java --- readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="13dc4611-e1b6-47cf-afc2-90d867870bce" >
+				<munit:payload value="#[readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getorderpoNumbermicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\order\(poNumber):micorp-salesforce-sys-api-config" doc:id="e437e813-dea6-4387-be0b-90647ba3b719" name="get:\order\(poNumber):micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="5db30b7e-bd21-4ead-9a01-a2aa5c28a5bb" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getorderpoNumbermicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\order:application\json:micorp-salesforce-sys-api-config-test" doc:id="a09a8eb1-efb0-4f2f-817d-6b6b6112f20e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock create-order__c-impl-flow" doc:id="e20e5003-aa68-4336-af02-e3b215aab7a1" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="be227264-4108-4ee9-9769-8c40e44a9624" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postorderapplicationjsonmicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postorderapplicationjsonmicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="606c4a5a-9578-44e3-a2cf-c495aa6b6dc7" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postorderapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postorderapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postorderapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\order:application\json:micorp-salesforce-sys-api-config" doc:id="1e0f2c37-2055-4214-bc8e-f000183d2e63" name="post:\order:application\json:micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="7cdd002b-1d56-4f82-8dd3-5ffed536a351" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postorderapplicationjsonmicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\customer:application\json:micorp-salesforce-sys-api-config-test" doc:id="1ce647df-0450-4e90-be82-396af06f6adb" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock create-customer__c-impl-flow" doc:id="91da1c1b-31bc-405f-94d0-245d1469c086" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a2cf2ae1-6554-4d46-a40c-c44c9abce148" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="60b954da-3d7b-4039-861e-523e384c7f0d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\customer:application\json:micorp-salesforce-sys-api-config" doc:id="a5312328-192f-44b9-814f-9e50225e8399" name="post:\customer:application\json:micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="d17ee490-3904-4549-98ee-06ef9ee421b0" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcustomerapplicationjsonmicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\item:application\json:micorp-salesforce-sys-api-config-test" doc:id="8c9f62d3-580f-4692-a634-df74f3cdea7e" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock create-item__c-impl-flow" doc:id="dd25268b-2bab-44cb-a312-fcfa7e17ba43" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="752003a5-323c-403f-be83-08377162b870" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postitemapplicationjsonmicorpsalesforcesysapiconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postitemapplicationjsonmicorpsalesforcesysapiconfigtest\mock_variable_.dwl')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="8a63986b-855f-43a8-aadc-95bd215e6ea0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postitemapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postitemapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postitemapplicationjsonmicorpsalesforcesysapiconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\item:application\json:micorp-salesforce-sys-api-config" doc:id="5cdc97ae-5557-4588-a358-d3d2719af51a" name="post:\item:application\json:micorp-salesforce-sys-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="ad528d7a-45a9-42c3-89a8-27c287dcbcf3" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postitemapplicationjsonmicorpsalesforcesysapiconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

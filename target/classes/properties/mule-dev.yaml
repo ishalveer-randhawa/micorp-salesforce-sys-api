@@ -1,0 +1,23 @@
+# DEV Configuration
+
+# Listener Configuration 
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  basePath: "/*"
+
+# JSON Logger Configuration
+json.logger:
+  application:
+    name: "micorp-salesforce-sys-api"
+    version: "v1" 
+
+# Salesforce Configuration:
+sf: 
+  username : "![SE1xFQdc0/9ovU++COCLelUObwehR3qfoDyMqsGEQls=]"
+  password : "![rTLSfwO4XOr9ynwnBGOJrA==]"
+  security : "![LrmFRdobg5oerVxt3RTMNVF1wVb5vfspQUSTaANm3zM=]"
+ 
+#API Autodiscovery
+autodiscovery:
+  id: "18033991"

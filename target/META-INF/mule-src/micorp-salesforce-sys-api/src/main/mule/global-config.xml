@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+		xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config
+		name="micorp-salesforce-sys-api-httpListenerConfig">
+		<http:listener-connection host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+	<apikit:config name="micorp-salesforce-sys-api-config"
+		api="resource::ce235d46-115c-497c-b0e2-474afd80f5e9:micorp-salesforce-sys-api:1.0.0:raml:zip:micorp-salesforce-sys-api.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+		
+	<salesforce:sfdc-config name="Salesforce_Config"
+		doc:name="Salesforce Config"
+		doc:id="3b7c2915-5e51-4fe7-baf6-0990cae39443">
+		<salesforce:basic-connection
+			username="${secure::sf.username}" password="${secure::sf.password}"
+			securityToken="${secure::sf.security}" />
+	</salesforce:sfdc-config>
+	<api-gateway:autodiscovery
+		apiId="${secure::autodiscovery.id}" ignoreBasePath="true"
+		doc:name="API Autodiscovery"
+		doc:id="170c07f2-0a61-4bae-827b-892e4f945faa"
+		flowRef="micorp-salesforce-sys-api-main" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="ce3d38a1-f304-4860-a3bc-65fe33b0f7b2" file="properties\mule-dev.yaml" key="${mule.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="8efcdb90-5002-43c1-96ff-9e38cd21de83" file="properties\mule-dev.yaml" />
+	<global-property doc:name="Global Property" doc:id="c1e40682-ace9-4fc4-ae74-da879ed0ac91" name="mule.key" value="abcdefghijklmnop" />
+
+</mule>

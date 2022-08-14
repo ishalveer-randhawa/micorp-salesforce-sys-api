@@ -1,0 +1,12 @@
+sf: 
+  username : "![WsoqheCXiZ1FPjd8BEanm1w+QciaV/x2c8cNanMRgaM=]"
+  password : "![kBZdQ0mLxgEm5s21B6pBSA==]"
+  security : "![inoa9QyKeQDIVPlQHcyEdKIJ27l7Q3dmNSLfHEFUTIk=]"
+  
+autodiscovery:
+  id: "18006395"
+  
+json.logger:
+  application:
+    name: "micorp-salesforce-prc-api"
+    version: "v1" 

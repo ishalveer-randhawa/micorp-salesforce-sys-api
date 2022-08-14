@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+
+
+
+	<flow name="micorp-salesforce-sys-api-main">
+		<http:listener
+			config-ref="micorp-salesforce-sys-api-httpListenerConfig"
+			path="/api/*">
+			<http:response
+				statusCode="#[vars.httpStatus default 200]">
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:response>
+			<http:error-response
+				statusCode="#[vars.httpStatus default 500]">
+				<http:body>#[payload]</http:body>
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:error-response>
+		</http:listener>
+		<apikit:router
+			config-ref="micorp-salesforce-sys-api-config" />
+		<error-handler ref="APIkit-router-error-handler" />
+	</flow>
+	<flow name="micorp-salesforce-sys-api-console">
+		<http:listener
+			config-ref="micorp-salesforce-sys-api-httpListenerConfig"
+			path="/console/*">
+			<http:response
+				statusCode="#[vars.httpStatus default 200]">
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:response>
+			<http:error-response
+				statusCode="#[vars.httpStatus default 500]">
+				<http:body>#[payload]</http:body>
+				<http:headers>#[vars.outboundHeaders default {}]</http:headers>
+			</http:error-response>
+		</http:listener>
+		<apikit:console
+			config-ref="micorp-salesforce-sys-api-config" />
+		<error-handler ref="APIkit-router-error-handler">
+
+		</error-handler>
+	</flow>
+	<flow name="get:\item\(item_id):micorp-salesforce-sys-api-config">
+		<flow-ref doc:name="get-item__c-impl-flow"
+			doc:id="cb6ab76a-a33a-4425-ad56-ed98e9e375e8"
+			name="get-item__c-impl-flow" />
+	</flow>
+	<flow
+		name="get:\customer\(order_id):micorp-salesforce-sys-api-config">
+		<flow-ref doc:name="get-customer__c-impl-flow"
+			doc:id="fcb4b570-8f58-4dcb-8aaa-e0b160cf4a67"
+			name="get-customer__c-impl-flow" />
+	</flow>
+	<flow
+		name="get:\order\(poNumber):micorp-salesforce-sys-api-config"
+		doc:id="45264b19-d913-4046-94da-9d284d8ef6eb">
+		<flow-ref doc:name="get-order__c-impl-flow"
+			doc:id="41cb8dbc-6a6a-41d0-9c5b-b5ca4e8ec039"
+			name="get-order__c-impl-flow" />
+
+	</flow>
+	<flow
+		name="post:\customer:application\json:micorp-salesforce-sys-api-config">
+		<flow-ref doc:name="create-customer__c-impl-flow"
+			doc:id="a2cf2ae1-6554-4d46-a40c-c44c9abce148"
+			name="create-customer__c-impl-flow" />
+		<choice doc:name="is-create-customer__c-successful"
+			doc:id="319b9e2f-2584-4467-9e09-4a6bae9b0b40">
+			<when expression="#[(payload.successful)==true]">
+				<ee:transform doc:name="success-message"
+					doc:id="2bac8a64-982f-454f-beed-a6d62099a9a0">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "message": "Customer Data has been added successfully to Salesforce",
+  "customerId": payload.items.id[0]
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<raise-error doc:name="Raise error" doc:id="e98db3d4-fc58-475f-b2e5-ccf92f3049f8" type="CUSTOMER:DUPLICATE_ID" description="#[payload.items.exception.message[0]]" />
+			</otherwise>
+		</choice>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="26426b01-22f1-4d16-bed7-ca8a9f55ee92" >
+				<ee:transform doc:name="failure-message" doc:id="dd711f29-66c4-4963-bae7-64553c403c7e">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message:payload.items.message[0]
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow
+		name="post:\item:application\json:micorp-salesforce-sys-api-config">
+		<flow-ref doc:name="create-item__c-impl-flow"
+			doc:id="752003a5-323c-403f-be83-08377162b870"
+			name="create-item__c-impl-flow" />
+		<choice doc:name="is-create__item-successful"
+			doc:id="3d58b31d-033a-4cc4-953e-00e73f117d7f">
+			<when expression="#[(payload.successful)==true]">
+				<ee:transform doc:name="success-message"
+					doc:id="2465b271-70cd-49f8-85d4-574fc2076b84">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "message": "Customer Data has been added successfully to Salesforce",
+  "itemId":payload.items.id[0]
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<raise-error doc:name="Raise error" doc:id="8f3fe8e1-30f5-463f-b4cc-d4bac9ac6cb5" type="ITEM:DUPLICATE_ID" description="#[payload.items.exception.message[0]]" />
+			</otherwise>
+		</choice>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8119b6cd-b652-4c0a-a65a-d3c5fcc8a67d" >
+				<ee:transform doc:name="failure-message" doc:id="0608ec14-d94e-4415-b0d7-eefc8f660bb6">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	message:payload.items.message[0]
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow
+		name="post:\order:application\json:micorp-salesforce-sys-api-config">
+		<flow-ref doc:name="create-order__c-impl-flow"
+			doc:id="be227264-4108-4ee9-9769-8c40e44a9624"
+			name="create-order__c-impl-flow" />
+		<choice doc:name="is-create-order__c_successful"
+			doc:id="def13a88-672a-402d-a466-f7870df89b16">
+			<when expression="#[(payload.successful)==true]">
+				<ee:transform doc:name="success-message"
+					doc:id="c6ed58a6-871b-45f5-b311-ca9a1f4e9d47">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "message": "Order Data has been added successfully to Salesforce",
+  "orderId": payload.items.id[0]
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<raise-error doc:name="Raise error"
+					doc:id="1d389f5f-f432-45ba-af7d-d1936c6a57a5"
+					type="ORDER:DUPLICATE_ID"
+					description="#[payload.items.exception.message[0]]" />
+			</otherwise>
+		</choice>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="09ae4a62-ef9e-4498-8b73-f6de70af7bff" >
+				<ee:transform doc:name="failure-message" doc:id="34c25555-a0e6-4dc3-ba34-926b798e9e44">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+"error-message":payload.items.exception.localizedMessage[0]
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+		
+	</flow>
+</mule>

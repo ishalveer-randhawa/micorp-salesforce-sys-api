@@ -1,0 +1,4 @@
+{
+  "secureProperties": ["secure::username", "secure::password","secure::security"],
+  "minMuleVersion": "4.4.0"
+}
